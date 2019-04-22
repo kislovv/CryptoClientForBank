@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using CertificateServer.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.EntityFrameworkCore;
 
 namespace CertificateServer.Controllers
 {
@@ -16,11 +18,14 @@ namespace CertificateServer.Controllers
             db = context;
         }
 
+
+        [Authorize(Roles = "user")]
         public IActionResult Index()
         {
-            return View(db.Users.ToList());
+            User user = db.Users.FirstOrDefault(u => u.Phone == User.Identity.Name); 
+            return View(user);
         }
 
-        
+
     }
 }
