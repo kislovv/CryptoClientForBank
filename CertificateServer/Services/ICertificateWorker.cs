@@ -5,7 +5,7 @@ using Org.BouncyCastle.X509;
 
 namespace CertificateServer.Services
 {
-    interface ICertificateWorker
+    public interface ICertificateWorker
     {
         string SertificatePath { get; set; }
         AsymmetricCipherKeyPair GenerateEcKeyPair(string curveName);

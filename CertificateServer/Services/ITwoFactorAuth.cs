@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace CertificateServer.Services
 {
-    interface ITwoFactorAuth
+    public interface ITwoFactorAuth
     {
         int Hash { get; set; }
         int GetTwoFactorHash();

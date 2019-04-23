@@ -10,16 +10,16 @@ namespace CertificateServer.Services
 {
     public class UserInicialazer
     {
-        private static BaseDbContext DataBaseContext { get; set; }
-        public static void DatabaseInitialaze()
+        
+        public static void DatabaseInitialaze(BaseDbContext context)
         {
-            if (!DataBaseContext.Roles.Any() && !DataBaseContext.Users.Any())
+            if (!context.Roles.Any() && !context.Users.Any())
             {
                 var adminRole = new Role { RoleName = "admin" };
                 var userRole = new Role { RoleName = "user" };
-                DataBaseContext.Roles.Add(adminRole);
-                DataBaseContext.Roles.Add(userRole);
-                DataBaseContext.Users.AddRange(
+                context.Roles.Add(adminRole);
+                context.Roles.Add(userRole);
+                context.Users.AddRange(
                     new User
                     {
                         Name = "Kirill",
@@ -47,7 +47,7 @@ namespace CertificateServer.Services
                         Sername = "Mislov",
                         UserId = Guid.NewGuid()
                     });
-                DataBaseContext.SaveChanges();
+                context.SaveChanges();
             }
         }
     }

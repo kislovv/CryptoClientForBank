@@ -1,14 +1,15 @@
 ﻿using System.Threading.Tasks;
+
 using CertificateServer.Models;
 using CertificateServer.ViewModels;
-using Microsoft.AspNetCore.Mvc;
+
+using Microsoft.AspNetCore.Http;
 
 namespace CertificateServer.Services
 {
     public interface IAccountManager
     {
-        BaseDbContext DataContext { get; set; }
-
-        Task<User> ValidateAsync(LoginModel model, Controller controller);
+        Task<User> ValidateAsync(LoginModel model, HttpContext context, BaseDbContext baseDbContext);
+        Task Authenticate(User user, HttpContext httpContext);
     }
 }

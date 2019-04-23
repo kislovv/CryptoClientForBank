@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CertificateServer.Models;
 using CertificateServer.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +37,7 @@ namespace CertificateServer
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
 
             services.AddDbContext<BaseDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));

@@ -12,7 +12,7 @@ namespace CertificateServer.Services
         public int GetTwoFactorHash()
         {
             //TODO Юзаем Албертину Апишку
-            throw new NotImplementedException();
+            return new Random().Next();
         }
 
         public bool HashIsRigth(int inputHash)

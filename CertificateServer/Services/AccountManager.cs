@@ -6,6 +6,7 @@ using CertificateServer.Models;
 using CertificateServer.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,9 +16,7 @@ namespace CertificateServer.Services
     {
         //TODO Сюда вынести авторизацию и аутентификацию, контроллеры нужно разгрузить
 
-        public BaseDbContext DataContext { get; set; }
-
-        public async Task<User> ValidateAsync(LoginModel model, Controller controller)
+        public async Task<User> ValidateAsync(LoginModel model, HttpContext httpContext , BaseDbContext DataContext)
         {
             User user = await DataContext.Users
                    .Include(u => u.Role)
@@ -25,13 +24,13 @@ namespace CertificateServer.Services
 
             if (user != null)
             {
-                await Authenticate(user, controller); // аутентификация
+               
                 return user;
             }
             return null;
         }
 
-        private async Task Authenticate(User user, Controller controller)
+        public async Task Authenticate(User user, HttpContext httpContext)
         {
             // создаем один claim
             var claims = new List<Claim>
@@ -43,7 +42,7 @@ namespace CertificateServer.Services
             ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
                 ClaimsIdentity.DefaultRoleClaimType);
             // установка аутентификационных куки
-            await controller.HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
+            await httpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
         }
     }
 }

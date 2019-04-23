@@ -18,13 +18,13 @@ namespace CertificateServer.Controllers
         private BaseDbContext db;
         private ITwoFactorAuth TwoFactorAuth { get; set; }
         private IAccountManager AccountManager { get; set; }
-        public AccountController(BaseDbContext context)
+        public AccountController(BaseDbContext context, IAccountManager accountManager , ITwoFactorAuth  twoFactorAuth)
         {
-            UserInicialazer.DatabaseInitialaze();
+            UserInicialazer.DatabaseInitialaze(context);
             db = context;
+            AccountManager = accountManager;
+            TwoFactorAuth = twoFactorAuth;
         }
-
-        
         [HttpGet]
         public IActionResult Login()
         {
@@ -32,24 +32,22 @@ namespace CertificateServer.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Login(LoginModel model)
+        public IActionResult Login(LoginModel model)
         {
             if (ModelState.IsValid)
             {
-              var user  = await this.AccountManager.ValidateAsync(model, this);
+              var user  = AccountManager.ValidateAsync(model, HttpContext, db);
               
-                if (user != null)
+                if (user?.Result != null)
                 {
-                    if (user.Role.RoleName.Equals("admin"))
-                    {
-                        return RedirectToAction("Index", "ChangeEvents");
-                    }
-                    if (user.Role.RoleName == "client")
+                    AccountManager.Authenticate(user.Result, HttpContext);
+                    
+                    if (user.Result.Role.RoleName == "user")
                     {
                         var hash = TwoFactorAuth.GetTwoFactorHash();
-                        return RedirectToAction("Index", "ChangeEvents");
+                        return RedirectToAction("Office", "PersonalOffice");
                     }
-                    return RedirectToAction("Office", "PersonalOffice");
+                   
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
