@@ -17,8 +17,10 @@ namespace CertificateServer.Controllers
     {
         private BaseDbContext db;
         private ITwoFactorAuth TwoFactorAuth { get; set; }
+        private IAccountManager AccountManager { get; set; }
         public AccountController(BaseDbContext context)
         {
+            UserInicialazer.DatabaseInitialaze();
             db = context;
         }
 
@@ -34,13 +36,10 @@ namespace CertificateServer.Controllers
         {
             if (ModelState.IsValid)
             {
-                User user = await db.Users
-                    .Include(u => u.Role)
-                    .FirstOrDefaultAsync(u => u.Phone == model.Phone && u.Password == model.Password);
-
+              var user  = await this.AccountManager.ValidateAsync(model, this);
+              
                 if (user != null)
                 {
-                    await Authenticate(user); // аутентификация
                     if (user.Role.RoleName.Equals("admin"))
                     {
                         return RedirectToAction("Index", "ChangeEvents");
@@ -50,12 +49,14 @@ namespace CertificateServer.Controllers
                         var hash = TwoFactorAuth.GetTwoFactorHash();
                         return RedirectToAction("Index", "ChangeEvents");
                     }
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Office", "PersonalOffice");
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
+
+
 
         //TODO если будет время
         //[HttpGet]
