@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewData["Title"] = "EnableAuthenticator";
+}
+
+<h2>EnableAuthenticator</h2>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script src="~/lib/qrcodejs/qrcode.js"></script>
+    <script type="text/javascript">
+
+        new QRCode(document.getElementById("qrCode"),
+            {
+                text: "@Html.Raw(Model.AuthenticatorUri)",
+                width: 200,
+                height: 200
+            });
+    </script>  
+    }

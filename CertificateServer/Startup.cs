@@ -31,13 +31,14 @@ namespace CertificateServer
             services.AddTransient<ICertificateWorker, CertificateWorker>();
             services.AddTransient<IAccountManager, AccountManager>();
 
+            services.AddAuthentication(Microsoft.AspNetCore.Server.IISIntegration.IISDefaults.AuthenticationScheme);
             services.Configure<CookiePolicyOptions>(options =>
             {
                 // This lambda determines whether user consent for non-essential cookies is needed for a given request.
                 options.CheckConsentNeeded = context => true;
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme);
+            
 
             services.AddDbContext<BaseDbContext>
                 (options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -57,6 +58,7 @@ namespace CertificateServer
             }
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseStaticFiles();
             app.UseCookiePolicy();
 

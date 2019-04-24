@@ -46,15 +46,19 @@ namespace CertificateServer.Controllers
                     {
                         var hash = TwoFactorAuth.GetTwoFactorHash();
                         return RedirectToAction("Office", "PersonalOffice");
-                    }
-                   
+                    }                  
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");
             }
             return View(model);
         }
 
-
+        [Route("Account/Logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Login", "Account");
+        }
 
         //TODO если будет время
         //[HttpGet]
@@ -76,12 +80,7 @@ namespace CertificateServer.Controllers
 
         //            user = new User
         //            {
-        //                Email = model.Email,
-        //                Password = model.Password,
-        //                UserGroup = model.Group,
-        //                UserNamme = model.FirstName,
-        //                UserSecondName = model.SecondName,
-        //                UserLastName = model.LastName
+
         //            };
         //            if (model.LastName == null) user.UserLastName = "";
 
@@ -101,26 +100,5 @@ namespace CertificateServer.Controllers
         //    }
         //    return View(model);
         //}
-
-        private async Task Authenticate(User user)
-        {
-            // создаем один claim
-            var claims = new List<Claim>
-            {
-                new Claim(ClaimsIdentity.DefaultNameClaimType, user.Phone),
-                new Claim(ClaimsIdentity.DefaultRoleClaimType, user.Role?.RoleName)
-            };
-            // создаем объект ClaimsIdentity
-            ClaimsIdentity id = new ClaimsIdentity(claims, "ApplicationCookie", ClaimsIdentity.DefaultNameClaimType,
-                ClaimsIdentity.DefaultRoleClaimType);
-            // установка аутентификационных куки
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(id));
-        }
-        [Route("Account/Logout")]
-        public async Task<IActionResult> Logout()
-        {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            return RedirectToAction("Login", "Account");
-        }
     }
 }
