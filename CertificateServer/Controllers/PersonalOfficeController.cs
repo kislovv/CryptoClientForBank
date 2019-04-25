@@ -15,7 +15,7 @@ namespace CertificateServer.Controllers
         {
             db = context;
         }
-
+        [Authorize(Roles = "user")]
         public IActionResult Office()
         {
             User user = db.Users.FirstOrDefault(u => u.Phone == User.Identity.Name);

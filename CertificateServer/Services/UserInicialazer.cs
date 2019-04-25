@@ -13,10 +13,10 @@ namespace CertificateServer.Services
         
         public static void DatabaseInitialaze(BaseDbContext context)
         {
-            if (!context.Roles.Any() && !context.Users.Any())
+            if (!context.Roles.Any() || !context.Users.Any())
             {
-                var adminRole = new Role { RoleName = "admin" };
-                var userRole = new Role { RoleName = "user" };
+                var adminRole = new Role { RoleId = Guid.NewGuid(), RoleName = "admin" };
+                var userRole = new Role { RoleId = Guid.NewGuid(), RoleName = "user" };
                 context.Roles.Add(adminRole);
                 context.Roles.Add(userRole);
                 context.Users.AddRange(
