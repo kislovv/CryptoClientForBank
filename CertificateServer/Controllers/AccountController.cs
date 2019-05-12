@@ -1,18 +1,15 @@
-﻿using System.Collections.Generic;
-using System.Security.Claims;
-using System.Threading.Tasks;
-
-using CertificateServer.Models;
-using CertificateServer.Services;
-using CertificateServer.ViewModels;
-
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Mvc;
-
-
-namespace CertificateServer.Controllers
+﻿namespace CertificateServer.Controllers
 {
+    using System.Threading.Tasks;
+
+    using CertificateServer.Models;
+    using CertificateServer.Services;
+    using CertificateServer.ViewModels;
+
+    using Microsoft.AspNetCore.Authentication;
+    using Microsoft.AspNetCore.Authentication.Cookies;
+    using Microsoft.AspNetCore.Mvc;
+
     public class AccountController : Controller
     {
         private BaseDbContext db;
@@ -45,7 +42,10 @@ namespace CertificateServer.Controllers
                     if (user.Result.Role.RoleName == "user")
                     {
                         var hash = TwoFactorAuth.GetTwoFactorHash();
-                        return RedirectToAction("Office", "PersonalOffice");
+                        if (TwoFactorAuth.HashIsRigth(hash))
+                        {
+                            return RedirectToAction("Office", "PersonalOffice");
+                        }
                     }                  
                 }
                 ModelState.AddModelError("", "Некорректные логин и(или) пароль");

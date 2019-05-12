@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-
-namespace CertificateServer.Models
+﻿namespace CertificateServer.Models
 {
+    using Microsoft.EntityFrameworkCore;
+
     public class BaseDbContext : DbContext
     {
         public DbSet<User> Users { get; set; }

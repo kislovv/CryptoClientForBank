@@ -15,9 +15,10 @@ namespace CertificateServer.Services
             return new Random().Next();
         }
 
+        //mock
         public bool HashIsRigth(int inputHash)
         {
-            return inputHash == Hash;
+            return true;
         }
     }
 }

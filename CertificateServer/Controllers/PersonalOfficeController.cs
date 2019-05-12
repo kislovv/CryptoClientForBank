@@ -1,12 +1,12 @@
-﻿using System.Linq;
-
-using CertificateServer.Models;
-
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
-
-namespace CertificateServer.Controllers
+﻿namespace CertificateServer.Controllers
 {
+    using System.Linq;
+
+    using CertificateServer.Models;
+
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Mvc;
+
     public class PersonalOfficeController : Controller
     {
 

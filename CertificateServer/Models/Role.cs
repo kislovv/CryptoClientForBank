@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CertificateServer.Models
+﻿namespace CertificateServer.Models
 {
+    using System;
+    using System.Collections.Generic;
+
     public class Role
     {
         public Guid RoleId { get; set; }

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace CertificateServer.Models
+﻿namespace CertificateServer.Models
 {
+    using System;
+
     public class User
     {
         public Guid UserId { get; set; }
