@@ -5,7 +5,7 @@ namespace CertificateServer.Services
 {
     public interface IFileWorker
     {
-        Document FillDocumentModel(IFormFile formFile);
+        Document FillDocumentModel(IFormFile formFile, string extencion, User user);
         bool TypeOfDocumentIsValid(string documentType);
     }
 }

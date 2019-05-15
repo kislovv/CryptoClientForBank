@@ -6,3 +6,9 @@
 <h2>PersonalOffice</h2>
 
 <div> You @Model.Name </div>
+
+<h3>Выберите файл для загрузки</h3>
+<form asp-action="AddFile" asp-controller="PersonalOffice" method="post" enctype="multipart/form-data">
+    <input type="file" name="uploadedFile" /><br>
+    <input type="submit" value="Загрузить" />
+</form>

@@ -10,15 +10,16 @@ namespace CertificateServer.Services
 {
     public class FileWorker : IFileWorker
     {
-        public Document FillDocumentModel(IFormFile formFile)
+        public Document FillDocumentModel(IFormFile formFile, string extencion, User user)
         {
             using (var formDataFile = formFile.OpenReadStream())
             {
                 var document = new Document
                 {
                     Data = ReadFully(formDataFile),
-                    DocumentType = formFile.ContentType,
-                    Name = formFile.Name
+                    Name = formFile.Name,
+                    DocumentType = extencion,
+                    User = user
                 };
                 return document;
             }
@@ -29,23 +30,24 @@ namespace CertificateServer.Services
             var docType = TypeOfDocument.unknown;
             switch (documentType)
             {
-                case "doc":
+                case ".doc":
+                case ".txt":
                     docType = TypeOfDocument.doc;
                     break;
-                case "docx":
+                case ".docx":
                     docType = TypeOfDocument.docx;
                     break;
-                case "xls":
+                case ".xls":
                     docType = TypeOfDocument.xls;
                     break;
-                case "xlsx":
+                case ".xlsx":
                     docType = TypeOfDocument.xlsx;
                     break;
-                case "pdf":
+                case ".pdf":
                     docType = TypeOfDocument.pdf;
                     break;               
             }
-            return docType == TypeOfDocument.unknown;
+            return docType != TypeOfDocument.unknown;
         }
 
         /// <summary>
