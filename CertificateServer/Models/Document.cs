@@ -1,19 +1,20 @@
 ﻿namespace CertificateServer.Models
 {
+    //TODO : перенести в АПИ
     public enum TypeOfDocument
     {
         xls,
         xlsx,
         doc,
         docx,
-        pdf
+        pdf,
+        unknown
     }
     public class Document
     {
-        public string Path { get; set; }
         public string Name { get; set; }
         public User User { get; set; }
-        public TypeOfDocument DocumentType { get; set; }
+        public string DocumentType { get; set; }
         public byte[] Data { get; set; }
     }
 }

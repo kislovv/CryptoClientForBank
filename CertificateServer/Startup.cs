@@ -26,6 +26,7 @@
             services.AddTransient<ITwoFactorAuth, TwoFactorAuth>();
             services.AddTransient<ICertificateWorker, CertificateWorker>();
             services.AddTransient<IAccountManager, AccountManager>();
+            services.AddTransient<IFileWorker, FileWorker>();
 
             // установка конфигурации подключения
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
